@@ -1,4 +1,3 @@
-// app/layout.js
 'use client';
 
 import '../styles/globals.css';

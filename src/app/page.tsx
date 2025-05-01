@@ -40,12 +40,11 @@ export default function HomePage() {
   }, [loading]);
 
   const handleSignIn = () => {
-    router.push('/signin/login'); // Change to '/login' if that's your actual route
+    router.push('/signin/login');
   };
 
   return (
     <div className="relative min-h-screen bg-[#039994] flex flex-col justify-center items-center text-white">
-      {/* Sign In Button */}
       <button
         onClick={handleSignIn}
         className="absolute top-6 right-6 bg-white text-[#039994] font-semibold px-4 py-2 rounded hover:bg-gray-100 transition"
