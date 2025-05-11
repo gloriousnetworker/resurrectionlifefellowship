@@ -19,44 +19,44 @@ export default function Navbar() {
   const navItems = [
     {
       name: 'Relief Center',
-      href: '/relief-center',
+      href: '/about-us',
       subItems: [
-        { name: 'Our Programs', href: '/relief-center/programs' },
-        { name: 'Impact Stories', href: '/relief-center/stories' },
-        { name: 'Partner NGOs', href: '/relief-center/partners' }
+        { name: 'Our Programs', href: '/about-us' },
+        { name: 'Impact Stories', href: '/about-us' },
+        { name: 'Partner NGOs', href: '/login' }
       ]
     },
     {
       name: 'Buy & Give',
-      href: '/buy-give',
+      href: '/products',
       subItems: [
-        { name: 'All Products', href: '/buy-give/products' },
-        { name: 'Best Sellers', href: '/buy-give/best-sellers' },
-        { name: 'How It Works', href: '/buy-give/how-it-works' }
+        { name: 'All Products', href: '/products' },
+        { name: 'Best Sellers', href: '/products' },
+        { name: 'How It Works', href: '/donate' }
       ]
     },
     {
       name: 'If You Can Help, It Will Help',
       href: '/help',
       subItems: [
-        { name: 'Volunteer', href: '/help/volunteer' },
-        { name: 'Donate', href: '/help/donate' },
-        { name: 'Partnerships', href: '/help/partnerships' }
+        { name: 'Volunteer', href: '/register' },
+        { name: 'Donate', href: '/donate' },
+        { name: 'Partnerships', href: '/login' }
       ]
     },
     {
       name: 'Sign Up',
-      href: '/signup',
+      href: '/register',
       subItems: [
-        { name: 'Create Account', href: '/signup/create-account' },
-        { name: 'Login', href: '/signup/login' },
+        { name: 'Create Account', href: '/register' },
+        { name: 'Login', href: '/login' },
         { name: 'Dashboard', href: '/dashboard' }
       ]
     }
   ];
 
   const handleSignIn = () => {
-    router.push('/signup/login');
+    router.push('/login');
   };
 
   return (

@@ -1,113 +1,244 @@
 'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Navbar from '@/components/DashboardNavbar';
+import Footer from '@/components/Footer';
 
-import React, { useState } from 'react';
-import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
-import DashboardNavbar from '@/components/dashboard/DashboardNavbar';
-import DashboardOverview from '@/components/dashboard/overview/DashboardOverview';
-import Reporting from '@/components/dashboard/reporting/Reporting';
-import RECManagement from '@/components/dashboard/rec-sales/RECManagement';
-import ResiGroupManagement from '@/components/dashboard/resi-group/ResiGroupManagement';
-import CommissionStructure from '@/components/dashboard/commission/CommissionStructure';
-import PayoutProcessing from '@/components/dashboard/payout/PayoutProcessing';
-import DashboardContactSupport from '@/components/dashboard/ContactSupport';
-import DashboardHelpCentre from '@/components/dashboard/HelpCentre';
-import DashboardNotifications from '@/components/dashboard/Notifications';
-import DashboardLogout from '@/components/dashboard/Logout';
-import MyAccount from '@/components/dashboard/account/MyAccount';
-import AgreementManagement from '@/components/dashboard/agreement/AgreementManagement';
-import UserSupport from '@/components/dashboard/user-support/UserSupport';
-import UserManagement from '@/components/dashboard/user-management/UserManagement';
+export default function AdminDashboardPage() {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [ngos, setNgos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(false);
+  const [loadingNgos, setLoadingNgos] = useState(false);
+  const [activeTab, setActiveTab] = useState('users');
 
-export default function UserDashboard() {
-  const [activeSection, setActiveSection] = useState('overview');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
 
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    setSidebarOpen(false);
+    if (!userData || !token) {
+      router.push('/login');
+      return;
+    }
+
+    const parsedUser = JSON.parse(userData);
+    setUser(parsedUser);
+
+    if (parsedUser.role !== 'admin') {
+      router.push('/dashboard');
+      return;
+    }
+
+    fetchUsers(token);
+    fetchNgos();
+  }, [router]);
+
+  const fetchUsers = async (token) => {
+    try {
+      setLoadingUsers(true);
+      const response = await fetch('https://big-relief-backend.vercel.app/api/v1/admin/users', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch users');
+      }
+
+      setUsers(data.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoadingUsers(false);
+      setLoading(false);
+    }
   };
 
-  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const fetchNgos = async () => {
+    try {
+      setLoadingNgos(true);
+      const response = await fetch('https://big-relief-backend.vercel.app/api/v1/ngos');
+      const data = await response.json();
 
-  const sectionDisplayMap = {
-    overview: 'Overview',
-    userManagement: 'User Management',
-    recSalesManagement: 'REC Sales Management',
-    resiGroupManagement: 'Resi. Group Management',
-    commissionStructure: 'Commission Structure',
-    payoutProcessing: 'Payout Processing',
-    reporting: 'Reporting',
-    myAccount: 'My Account',
-    agreementManagement: 'Agreement Management',
-    userSupport: 'User Support',
-    notifications: 'Notification',
-    helpCenter: 'Help Centre (FAQs)',
-    contactSupport: 'Contact Support',
-    logout: 'Log Out',
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch NGOs');
+      }
+
+      setNgos(data.data);
+    } catch (error) {
+      console.error('Error fetching NGOs:', error);
+    } finally {
+      setLoadingNgos(false);
+    }
   };
 
-  let SectionComponent;
-  switch (activeSection) {
-    case 'overview': SectionComponent = DashboardOverview; break;
-    case 'userManagement': SectionComponent = UserManagement; break;
-    case 'recSalesManagement': SectionComponent = RECManagement; break;
-    case 'resiGroupManagement': SectionComponent = ResiGroupManagement; break;
-    case 'commissionStructure': SectionComponent = CommissionStructure; break;
-    case 'payoutProcessing': SectionComponent = PayoutProcessing; break;
-    case 'reporting': SectionComponent = Reporting; break;
-    case 'myAccount': SectionComponent = MyAccount; break;
-    case 'agreementManagement': SectionComponent = AgreementManagement; break;
-    case 'userSupport': SectionComponent = UserSupport; break;
-    case 'notifications': SectionComponent = DashboardNotifications; break;
-    case 'helpCenter': SectionComponent = DashboardHelpCentre; break;
-    case 'contactSupport': SectionComponent = DashboardContactSupport; break;
-    case 'logout': SectionComponent = DashboardLogout; break;
-    default: SectionComponent = DashboardOverview;
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#039994]"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r h-screen fixed">
-        <DashboardSidebar
-          selectedSection={activeSection}
-          onSectionChange={handleSectionChange}
-        />
-      </aside>
-
-      {/* Main Area */}
-      <div className="md:ml-64 flex-1 flex flex-col">
-        <DashboardNavbar
-          toggleSidebar={toggleSidebar}
-          selectedSection={activeSection}
-          sectionDisplayMap={sectionDisplayMap}
-          onSectionChange={handleSectionChange}
-        />
-
-        {/* Mobile Sidebar Overlay */}
-        {sidebarOpen && (
-          <div className="fixed inset-0 z-50 flex md:hidden">
-            <div className="absolute inset-0 bg-black bg-opacity-50" onClick={toggleSidebar} />
-            <div className="relative bg-white w-64 h-full shadow-md">
-              <DashboardSidebar
-                selectedSection={activeSection}
-                onSectionChange={handleSectionChange}
-                toggleSidebar={toggleSidebar}
-              />
+    <div className="bg-gray-50 min-h-screen">
+      <Navbar />
+      
+      <div className="container mx-auto px-4 py-16">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+          <h1 className="text-3xl font-bold text-[#039994] mb-4">Admin Dashboard</h1>
+          <p className="text-gray-600 mb-6">
+            Welcome back, {user?.name}. You have administrator privileges.
+          </p>
+          
+          {/* Navigation Tabs */}
+          <div className="flex border-b border-gray-200 mb-6">
+            <button 
+              className={`py-2 px-4 font-medium ${activeTab === 'users' ? 'text-[#039994] border-b-2 border-[#039994]' : 'text-gray-500 hover:text-[#039994]'}`}
+              onClick={() => setActiveTab('users')}
+            >
+              System Users
+            </button>
+            <button 
+              className={`py-2 px-4 font-medium ${activeTab === 'ngos' ? 'text-[#039994] border-b-2 border-[#039994]' : 'text-gray-500 hover:text-[#039994]'}`}
+              onClick={() => setActiveTab('ngos')}
+            >
+              Partner NGOs
+            </button>
+          </div>
+          
+          {/* Users Table */}
+          {activeTab === 'users' && (
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-[#039994] mb-4">System Users</h2>
+              
+              {loadingUsers ? (
+                <div className="flex justify-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#039994]"></div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Email
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Role
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Joined
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {users.map((user) => (
+                        <tr key={user.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">{user.email}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.role === 'admin' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                              {user.role}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {formatDate(user.createdAt)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <main className="flex-1">
-          <div className="max-w-7xl mx-auto p-6">
-            {activeSection === 'logout'
-              ? <DashboardLogout />
-              : <SectionComponent />
-            }
-          </div>
-        </main>
+          )}
+          
+          {/* NGOs Table */}
+          {activeTab === 'ngos' && (
+            <div className="mb-8">
+              <h2 className="text-2xl font-semibold text-[#039994] mb-4">Partner NGOs</h2>
+              
+              {loadingNgos ? (
+                <div className="flex justify-center py-8">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#039994]"></div>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Name
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Description
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Contact Email
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Website
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Registered
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {ngos.map((ngo) => (
+                        <tr key={ngo.id}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm font-medium text-gray-900">{ngo.name}</div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-gray-500 truncate max-w-xs">{ngo.description}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-500">{ngo.contactEmail || 'N/A'}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {ngo.website ? (
+                              <a href={ngo.website} target="_blank" rel="noopener noreferrer" className="text-sm text-[#039994] hover:underline">
+                                Visit Website
+                              </a>
+                            ) : (
+                              <span className="text-sm text-gray-500">N/A</span>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {formatDate(ngo.createdAt)}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
