@@ -13,10 +13,12 @@ export default function Footer() {
     {
       title: 'Relief Center',
       items: [
-        { name: 'Programs', href: null },
-        { name: 'Impact Stories', href: null },
-        { name: 'Get Help', href: null },
-        { name: 'Partner NGOs', href: '/partners' }
+        { name: 'Government', href: null },
+        { name: 'UN', href: null },
+        { name: 'WHO', href: null },
+        { name: 'Private Companies', href: null },
+        { name: 'Co Relief', href: null },
+        { name: 'Our Partners', href: '/partners' }
       ]
     },
     {
@@ -95,8 +97,18 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Powered by partner */}
+        <div className="mt-12 flex flex-col items-center">
+          <span className="text-gray-500 text-sm mb-2">Powered by</span>
+          <img
+            src="/images/powered-by-shakers.jpg"
+            alt="Powered by Shakers"
+            className="h-16 w-16 rounded-full"
+          />
+        </div>
+
         {/* Bottom links */}
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} BigRelief. All rights reserved.
           </p>

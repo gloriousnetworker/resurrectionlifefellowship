@@ -23,7 +23,7 @@ export default function Navbar() {
       subItems: [
         { name: 'Our Programs', href: '/about-us' },
         { name: 'Impact Stories', href: '/about-us' },
-        { name: 'Partner NGOs', href: '/login' }
+        { name: 'Partner NGOs', href: '/partners' }
       ]
     },
     {
