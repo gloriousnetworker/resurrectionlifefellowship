@@ -292,15 +292,6 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          
-          <div className="text-center mt-16">
-            <button 
-              onClick={() => handleRouteChange('/exercises')}
-              className="bg-[#039994] text-white font-semibold px-10 py-4 rounded-lg hover:bg-[#02736f] transition transform hover:scale-105 shadow-lg"
-            >
-              View Exercise Programs
-            </button>
-          </div>
         </div>
       </section>
 
