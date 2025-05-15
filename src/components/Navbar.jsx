@@ -31,7 +31,7 @@ export default function Navbar() {
       href: '/products',
       subItems: [
         { name: 'All Products', href: '/products' },
-        { name: 'Best Sellers', href: '/products' },
+        { name: 'Scholarships', href: '/scholarships' },
         { name: 'How It Works', href: '/donate' }
       ]
     },
