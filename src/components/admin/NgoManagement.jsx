@@ -14,6 +14,7 @@ const NgoManagement = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
   const [selectedNgo, setSelectedNgo] = useState(null);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   const openModal = (type, ngo) => {
     setModalType(type);
@@ -28,11 +29,16 @@ const NgoManagement = ({
   };
 
   const handleVerify = async (id) => {
+    setIsVerifying(true);
     try {
-      await onVerifyNgo(id);
-      closeModal();
+      const success = await onVerifyNgo(id);
+      if (success) {
+        closeModal();
+      }
     } catch (error) {
       console.error('Verification failed:', error);
+    } finally {
+      setIsVerifying(false);
     }
   };
 
@@ -136,9 +142,10 @@ const NgoManagement = ({
                       {activeTab === 'pending' ? (
                         <button 
                           onClick={() => handleVerify(ngo.id)}
-                          className="text-green-500 hover:text-green-600 px-3 py-1 rounded"
+                          disabled={isVerifying}
+                          className="text-green-500 hover:text-green-600 px-3 py-1 rounded disabled:opacity-50"
                         >
-                          Verify
+                          {isVerifying ? 'Verifying...' : 'Verify'}
                         </button>
                       ) : (
                         <>
