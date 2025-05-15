@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import RollingBanner from '@/components/RollingBanner';
 import Footer from '@/components/Footer';
 
 // Register GSAP plugins
@@ -13,6 +14,13 @@ export default function HomePage() {
   const router = useRouter();
   const [currentDay, setCurrentDay] = useState('');
   const [dailyTheme, setDailyTheme] = useState('');
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
+  
+  // Background images for carousel
+  const backgroundImages = [
+    '/images/background.jpg', 
+    '/images/background2.jpg'
+  ];
 
   // Set daily theme based on current day
   useEffect(() => {
@@ -35,6 +43,15 @@ export default function HomePage() {
     // Initialize animations
     initAnimations();
   }, []);
+
+  // Background image carousel effect
+  useEffect(() => {
+    const carouselInterval = setInterval(() => {
+      setCurrentBgIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(carouselInterval);
+  }, [backgroundImages.length]);
 
   const initAnimations = () => {
     // Hero section animations
@@ -146,7 +163,7 @@ export default function HomePage() {
     {
       id: 5,
       name: 'Strength Training',
-      icon: 'M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14L20.57 16l-1.43-1.43L20.57 14.86z',
+      icon: 'M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43-1.43-1.43-1.43 1.43-2.57z',
       description: 'Weight training builds muscle, which increases your resting metabolic rate. This means your body burns more calories even when you are not exercising. Incorporate exercises targeting all major muscle groups 2-3 times per week.'
     },
     {
@@ -190,11 +207,19 @@ export default function HomePage() {
   return (
     <div className="bg-white text-gray-800">
       <Navbar />
+      <RollingBanner />
       
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-[#039994] to-[#02736f] overflow-hidden">
+      {/* Hero Section with Background Image Carousel */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/hero-pattern.png')] bg-cover bg-center opacity-10"></div>
+          {/* Background Image Carousel */}
+          {backgroundImages.map((image, index) => (
+            <div 
+              key={index}
+              className={`absolute top-0 left-0 w-full h-full bg-cover bg-center transition-opacity duration-1000 ${currentBgIndex === index ? 'opacity-100' : 'opacity-0'}`}
+              style={{ backgroundImage: `url(${image})` }}
+            ></div>
+          ))}
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-[#039994] opacity-80"></div>
         </div>
         
@@ -225,6 +250,18 @@ export default function HomePage() {
               Join Our Cause
             </button>
           </div>
+        </div>
+        
+        {/* Carousel Navigation Dots */}
+        <div className="absolute bottom-20 left-0 right-0 flex justify-center gap-2 z-10">
+          {backgroundImages.map((_, index) => (
+            <button 
+              key={index}
+              onClick={() => setCurrentBgIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all ${currentBgIndex === index ? 'bg-white scale-125' : 'bg-white bg-opacity-50'}`}
+              aria-label={`Slide ${index + 1}`}
+            ></button>
+          ))}
         </div>
         
         <div className="absolute bottom-10 left-0 right-0 flex justify-center animate-bounce">

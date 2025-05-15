@@ -1,4 +1,3 @@
-// app/admin/page.jsx
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -69,13 +68,12 @@ export default function AdminDashboardPage() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch users');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setUsers(data.data);
+      const data = await response.json();
+      setUsers(data.data || []);
     } catch (error) {
       console.error('Error fetching users:', error);
       setActionMessage({ type: 'error', message: 'Failed to fetch users' });
@@ -89,13 +87,13 @@ export default function AdminDashboardPage() {
     try {
       setLoadingNgos(true);
       const response = await fetch(`${API_URL}/ngos`);
-      const data = await response.json();
-
+      
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch NGOs');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setNgos(data.data);
+      const data = await response.json();
+      setNgos(data.data || []);
     } catch (error) {
       console.error('Error fetching NGOs:', error);
       setActionMessage({ type: 'error', message: 'Failed to fetch NGOs' });
@@ -114,13 +112,12 @@ export default function AdminDashboardPage() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch pending NGOs');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setPendingNgos(data.data);
+      const data = await response.json();
+      setPendingNgos(data.data || []);
     } catch (error) {
       console.error('Error fetching pending NGOs:', error);
       setActionMessage({ type: 'error', message: 'Failed to fetch pending NGOs' });
@@ -139,13 +136,12 @@ export default function AdminDashboardPage() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch banners');
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      setBanners(data.data);
+      const data = await response.json();
+      setBanners(data.data || []);
     } catch (error) {
       console.error('Error fetching banners:', error);
       setActionMessage({ type: 'error', message: 'Failed to fetch banners' });
@@ -157,19 +153,26 @@ export default function AdminDashboardPage() {
   const verifyNgo = async (id) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
       const response = await fetch(`${API_URL}/admin/ngos/${id}/verify`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to verify NGO');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to verify NGO. Status: ${response.status}`);
       }
 
+      const data = await response.json();
+      
       // Update the lists
       setPendingNgos(pendingNgos.filter(ngo => ngo.id !== id));
       setNgos([...ngos, data.data]);
@@ -177,13 +180,18 @@ export default function AdminDashboardPage() {
       setActionMessage({ type: 'success', message: 'NGO verified successfully' });
     } catch (error) {
       console.error('Error verifying NGO:', error);
-      setActionMessage({ type: 'error', message: 'Failed to verify NGO' });
+      setActionMessage({ type: 'error', message: error.message || 'Failed to verify NGO' });
     }
   };
 
   const updateNgo = async (id, formData) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
       const response = await fetch(`${API_URL}/ngos/${id}`, {
         method: 'PUT',
         headers: {
@@ -193,25 +201,30 @@ export default function AdminDashboardPage() {
         body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to update NGO');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to update NGO. Status: ${response.status}`);
       }
 
-      // Update the NGO in the list
+      const data = await response.json();
       setNgos(ngos.map(ngo => ngo.id === id ? data.data : ngo));
-      
       setActionMessage({ type: 'success', message: 'NGO updated successfully' });
+      return true;
     } catch (error) {
       console.error('Error updating NGO:', error);
-      setActionMessage({ type: 'error', message: 'Failed to update NGO' });
+      setActionMessage({ type: 'error', message: error.message || 'Failed to update NGO' });
+      return false;
     }
   };
 
   const deleteNgo = async (id) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
       const response = await fetch(`${API_URL}/ngos/${id}`, {
         method: 'DELETE',
         headers: {
@@ -219,17 +232,18 @@ export default function AdminDashboardPage() {
         }
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to delete NGO');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to delete NGO. Status: ${response.status}`);
       }
 
       setNgos(ngos.filter(ngo => ngo.id !== id));
       setActionMessage({ type: 'success', message: 'NGO deleted successfully' });
+      return true;
     } catch (error) {
       console.error('Error deleting NGO:', error);
-      setActionMessage({ type: 'error', message: 'Failed to delete NGO' });
+      setActionMessage({ type: 'error', message: error.message || 'Failed to delete NGO' });
+      return false;
     }
   };
 

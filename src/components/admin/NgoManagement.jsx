@@ -1,4 +1,3 @@
-// components/admin/NgoManagement.jsx
 import { useState } from 'react';
 import NgoModal from './NgoModal';
 
@@ -26,6 +25,29 @@ const NgoManagement = ({
     setIsModalOpen(false);
     setModalType('');
     setSelectedNgo(null);
+  };
+
+  const handleVerify = async (id) => {
+    try {
+      await onVerifyNgo(id);
+      closeModal();
+    } catch (error) {
+      console.error('Verification failed:', error);
+    }
+  };
+
+  const handleUpdate = async (id, formData) => {
+    const success = await onUpdateNgo(id, formData);
+    if (success) {
+      closeModal();
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const success = await onDeleteNgo(id);
+    if (success) {
+      closeModal();
+    }
   };
 
   const currentNgos = activeTab === 'verified' ? ngos : pendingNgos;
@@ -113,7 +135,7 @@ const NgoManagement = ({
                       </button>
                       {activeTab === 'pending' ? (
                         <button 
-                          onClick={() => onVerifyNgo(ngo.id)}
+                          onClick={() => handleVerify(ngo.id)}
                           className="text-green-500 hover:text-green-600 px-3 py-1 rounded"
                         >
                           Verify
@@ -154,8 +176,8 @@ const NgoManagement = ({
         onClose={closeModal}
         type={modalType}
         ngo={selectedNgo}
-        onUpdate={onUpdateNgo}
-        onDelete={onDeleteNgo}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
       />
     </div>
   );

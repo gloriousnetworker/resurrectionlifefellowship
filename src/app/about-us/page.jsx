@@ -114,42 +114,6 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
-        
-        {/* Team Section */}
-        <section className="mb-20">
-          <h2 className="text-3xl font-bold text-[#039994] mb-12 text-center">Our Team</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: 'Amina Bello', role: 'Founder & CEO', bio: 'Social entrepreneur with 10+ years experience in community development', img: '/images/team1.jpg' },
-              { name: 'Chike Obi', role: 'Programs Director', bio: 'Expert in sustainable development and NGO management', img: '/images/team2.jpg' },
-              { name: 'Fatima Yusuf', role: 'Operations Manager', bio: 'Logistics specialist ensuring efficient distribution', img: '/images/team3.jpg' },
-              { name: 'Emeka Okoro', role: 'Tech Lead', bio: 'Develops our digital platforms to maximize reach', img: '/images/team4.jpg' }
-            ].map((member, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden transition transform hover:scale-105">
-                <div className="h-64 bg-gray-100">
-                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
-                  <p className="text-[#039994] mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-        
-        {/* Partners Section */}
-        <section>
-          <h2 className="text-3xl font-bold text-[#039994] mb-12 text-center">Our Partners</h2>
-          <div className="flex flex-wrap justify-center gap-8">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="bg-white p-6 rounded-xl shadow-md flex items-center justify-center h-24 w-48">
-                <img src={`/images/partner${i}.png`} alt={`Partner ${i}`} className="h-full object-contain" />
-              </div>
-            ))}
-          </div>
-        </section>
       </div>
       
       <Footer />

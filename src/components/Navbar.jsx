@@ -37,10 +37,10 @@ export default function Navbar() {
     },
     {
       name: 'If You Can Help, It Will Help',
-      href: '/help',
+      href: '/support',
       subItems: [
         { name: 'Volunteer', href: '/register' },
-        { name: 'Donate', href: '/donate' },
+        { name: 'How you can help', href: '/support' },
         { name: 'Partnerships', href: '/login' }
       ]
     },

@@ -360,7 +360,7 @@ export default function DashboardPage() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar />
+      <RollingBanner />
       
       <div className="container mx-auto px-4 py-16">
         {/* Banner Carousel */}
@@ -446,7 +446,7 @@ export default function DashboardPage() {
               <div className="bg-[#039994] bg-opacity-10 p-6 rounded-xl border-l-4 border-[#039994]">
                 <h2 className="text-xl font-semibold text-[#039994] mb-3">Partner with Us</h2>
                 <p className="text-gray-700 mb-4">
-                  Register your NGO to become an official partner and enjoy exclusive benefits.
+                  Register and participate as an individual or corporate entities.
                 </p>
                 <button
                   onClick={() => setActiveTab('ngos')}

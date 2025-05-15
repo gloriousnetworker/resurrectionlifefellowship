@@ -43,8 +43,7 @@ export default function Footer() {
     'info@bigrelief.com',
     'customersupport@bigrelief.com',
     'career@bigrelief.com',
-    'sponsorship@bigrelief.com',
-    'mabu@bigrelief.com'
+    'sponsorship@bigrelief.com'
   ];
 
   return (
