@@ -222,6 +222,8 @@ export default function DonatePage() {
               >
                 Complete Sponsorship
               </button>
+
+              
               
               <p className="text-xs text-gray-500 mt-4 text-center">
                 Thank you for supporting our initiatives.
