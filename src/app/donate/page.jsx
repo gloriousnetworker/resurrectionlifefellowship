@@ -89,7 +89,7 @@ export default function DonatePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-              <h2 className="text-2xl font-semibold text-[#039994] mb-6">Sponsorship Information</h2>
+              <h2 className="text-2xl font-semibold text-[#039994] mb-6">Sponsorship Informations</h2>
               
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-3">Sponsorship Category</label>
