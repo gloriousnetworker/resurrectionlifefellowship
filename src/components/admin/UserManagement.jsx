@@ -1,4 +1,3 @@
-// components/admin/UserManagement.jsx
 import { useState } from 'react';
 import UserModal from './UserModal';
 
