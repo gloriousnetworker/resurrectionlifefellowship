@@ -8,7 +8,7 @@ export default function DonatePage() {
   const router = useRouter();
   const [donationAmount, setDonationAmount] = useState(5000);
   const [customAmount, setCustomAmount] = useState('');
-  const [donationType, setDonationType] = useState('one-time');
+  const [sponsorshipCategory, setSponsorshipCategory] = useState('community-projects');
   const [paymentMethod, setPaymentMethod] = useState('bank');
   const [paymentMade, setPaymentMade] = useState(false);
   const [donationComplete, setDonationComplete] = useState(false);
@@ -36,6 +36,13 @@ export default function DonatePage() {
     router.push('/');
   };
 
+  const sponsorshipCategories = [
+    { id: 'community-projects', label: 'Sponsorship for Community Projects' },
+    { id: 'healthcare', label: 'Health Care Services' },
+    { id: 'education', label: 'Education' },
+    { id: 'special-needs', label: 'Children with Special Needs' }
+  ];
+
   if (donationComplete) {
     return (
       <div className="bg-gray-50 min-h-screen">
@@ -43,12 +50,12 @@ export default function DonatePage() {
         <div className="container mx-auto px-4 py-16">
           <div className="bg-white rounded-2xl shadow-lg p-12 text-center max-w-2xl mx-auto">
             <div className="text-green-500 text-8xl mb-6">✓</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Thank You for Your Generous Donation!</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Thank You for Your Generous Contribution!</h2>
             <p className="text-gray-600 mb-6 text-lg">
-              Your contribution of ₦{donationAmount.toLocaleString()} will help transform lives and bring hope to those in need.
+              Your sponsorship of ₦{donationAmount.toLocaleString()} will help transform lives and bring hope to those in need.
             </p>
             <div className="bg-gray-50 p-6 rounded-xl mb-8">
-              <p className="text-gray-700 mb-2">Donation Reference: <span className="font-semibold">DON-{Math.floor(100000 + Math.random() * 900000)}</span></p>
+              <p className="text-gray-700 mb-2">Sponsorship Reference: <span className="font-semibold">SPO-{Math.floor(100000 + Math.random() * 900000)}</span></p>
               <p className="text-gray-700">Date: <span className="font-semibold">{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span></p>
             </div>
             <button 
@@ -73,7 +80,7 @@ export default function DonatePage() {
         <div className="container mx-auto px-4 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Make a Difference Today</h1>
           <p className="text-xl text-white max-w-3xl mx-auto">
-            Your donation helps us provide essential resources to communities in need
+            Your sponsorship helps us provide essential resources to communities in need
           </p>
         </div>
       </div>
@@ -82,28 +89,25 @@ export default function DonatePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
             <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-              <h2 className="text-2xl font-semibold text-[#039994] mb-6">Donation Information</h2>
+              <h2 className="text-2xl font-semibold text-[#039994] mb-6">Sponsorship Information</h2>
               
               <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-3">Donation Type</label>
-                <div className="flex gap-4">
-                  <button
-                    onClick={() => setDonationType('one-time')}
-                    className={`px-6 py-3 rounded-lg ${donationType === 'one-time' ? 'bg-[#039994] text-white' : 'bg-gray-100 text-gray-800'} transition`}
-                  >
-                    One-time Donation
-                  </button>
-                  <button
-                    onClick={() => setDonationType('monthly')}
-                    className={`px-6 py-3 rounded-lg ${donationType === 'monthly' ? 'bg-[#039994] text-white' : 'bg-gray-100 text-gray-800'} transition`}
-                  >
-                    Monthly Donation
-                  </button>
+                <label className="block text-gray-700 font-medium mb-3">Sponsorship Category</label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {sponsorshipCategories.map(category => (
+                    <button
+                      key={category.id}
+                      onClick={() => setSponsorshipCategory(category.id)}
+                      className={`px-4 py-3 rounded-lg text-sm ${sponsorshipCategory === category.id ? 'bg-[#039994] text-white' : 'bg-gray-100 text-gray-800'} transition`}
+                    >
+                      {category.label}
+                    </button>
+                  ))}
                 </div>
               </div>
               
               <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-3">Donation Amount (₦)</label>
+                <label className="block text-gray-700 font-medium mb-3">Sponsorship Amount (₦)</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
                   {presetAmounts.map(amount => (
                     <button
@@ -144,7 +148,7 @@ export default function DonatePage() {
                     <p className="text-gray-600 mb-1">Account Name: Shakers Network Media Limited</p>
                     <p className="text-gray-600 mb-1">Account Number: 0556638338</p>
                     <p className="text-sm text-gray-500 mt-3">
-                      Please use "DONATION" as the payment reference
+                      Please use "SPONSORSHIP" as the payment reference
                     </p>
                   </div>
 
@@ -166,12 +170,14 @@ export default function DonatePage() {
           
           <div>
             <div className="bg-white rounded-2xl shadow-lg p-8 sticky top-8">
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">Donation Summary</h2>
+              <h2 className="text-xl font-semibold text-gray-800 mb-6">Sponsorship Summary</h2>
               
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Donation Type:</span>
-                  <span className="font-medium capitalize">{donationType}</span>
+                  <span className="text-gray-600">Category:</span>
+                  <span className="font-medium">
+                    {sponsorshipCategories.find(c => c.id === sponsorshipCategory)?.label || ''}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Amount:</span>
@@ -182,13 +188,26 @@ export default function DonatePage() {
               <div className="bg-gray-50 p-4 rounded-lg mb-6">
                 <h3 className="font-medium text-[#039994] mb-2">Your Impact</h3>
                 <p className="text-gray-600">
-                  {donationAmount >= 50000 ? 
-                    "Your donation can provide food and education for 10 children for a month." :
-                   donationAmount >= 20000 ? 
-                    "Your donation can provide hygiene kits for 5 families." :
-                   donationAmount >= 10000 ?
-                    "Your donation can provide school supplies for 3 children." :
-                    "Your donation will help provide essential resources to those in need."}
+                  {sponsorshipCategory === 'community-projects' && (
+                    donationAmount >= 50000 ? 
+                      "Your sponsorship can help develop vital infrastructure for local communities." :
+                      "Your contribution will support key community development initiatives."
+                  )}
+                  {sponsorshipCategory === 'healthcare' && (
+                    donationAmount >= 50000 ? 
+                      "Your sponsorship can help provide medical care for 20 individuals." :
+                      "Your contribution will help make healthcare more accessible."
+                  )}
+                  {sponsorshipCategory === 'education' && (
+                    donationAmount >= 50000 ? 
+                      "Your sponsorship can provide educational resources for an entire classroom." :
+                      "Your contribution will help provide educational opportunities."
+                  )}
+                  {sponsorshipCategory === 'special-needs' && (
+                    donationAmount >= 50000 ? 
+                      "Your sponsorship can provide specialized care and equipment for children with special needs." :
+                      "Your contribution will support programs for children with special needs."
+                  )}
                 </p>
               </div>
               
@@ -201,11 +220,11 @@ export default function DonatePage() {
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
-                Complete Donation
+                Complete Sponsorship
               </button>
               
               <p className="text-xs text-gray-500 mt-4 text-center">
-                All donations are tax-deductible as allowed by law.
+                Thank you for supporting our initiatives.
               </p>
             </div>
           </div>
