@@ -6,8 +6,7 @@ export default function Footer() {
       title: 'About Us',
       items: [
         { name: 'Our Mission', href: '/about-us' },
-        { name: 'Our Team', href: '/about-us' },
-        { name: 'Financials', href: '/donate' }
+        { name: 'Our Story', href: '/about-us' },
       ]
     },
     {

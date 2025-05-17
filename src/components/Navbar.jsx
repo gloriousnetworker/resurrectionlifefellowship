@@ -60,7 +60,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'}`}>
+    <nav className={`fixed w-full z-50 bg-white transition-all duration-300 ${scrolled ? 'shadow-md py-2' : 'py-4'}`}>  {/* Always white background */}
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -68,7 +68,7 @@ export default function Navbar() {
             <img 
               src="/images/BIG-RELIEF.png" 
               alt="BigRelief Logo" 
-              className={`h-12 transition-all duration-300 ${scrolled ? 'h-10' : 'h-12'}`}
+              className={`transition-all duration-300 ${scrolled ? 'h-10' : 'h-12'}`}
             />
           </Link>
 
@@ -100,7 +100,7 @@ export default function Navbar() {
 
             <button 
               onClick={handleSignIn}
-              className={`ml-4 px-6 py-2 rounded-full font-semibold transition ${scrolled ? 'bg-[#039994] text-white hover:bg-[#02736f]' : 'bg-white text-[#039994] hover:bg-gray-100'}`}
+              className="ml-4 px-6 py-2 rounded-full font-semibold bg-[#039994] text-white hover:bg-[#02736f] transition"
             >
               Sign In
             </button>
@@ -124,8 +124,8 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>
-          <div className="pt-4 pb-6 space-y-2">
+        <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>  {/* Mobile menu retains white bg */}
+          <div className="pt-4 pb-6 space-y-2 bg-white">
             {navItems.map((item) => (
               <div key={item.name} className="border-b border-gray-200">
                 <button 

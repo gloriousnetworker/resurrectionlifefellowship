@@ -67,7 +67,7 @@ export default function ProductsPage() {
       <Navbar />
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold text-[#039994] mb-4">Our Products</h1>
+          <h1 className="text-4xl font-bold text-[#039994] mb-4">Buy and Give</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">Every purchase makes a difference in someone's life</p>
         </div>
 
