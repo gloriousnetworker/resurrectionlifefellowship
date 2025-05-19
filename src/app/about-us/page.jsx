@@ -11,7 +11,7 @@ export default function AboutPage() {
       <div className="relative bg-gradient-to-br from-[#039994] to-[#02736f] py-24">
         <div className="absolute inset-0 bg-[url('/images/about-bg.jpg')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Relief Center</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">About Us</h1>
           <p className="text-xl text-white max-w-3xl mx-auto">
             Empowering communities through sustainable solutions
           </p>

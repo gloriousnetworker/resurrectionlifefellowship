@@ -10,11 +10,11 @@ export default function Footer() {
       ]
     },
     {
-      title: 'Relief Center',
+      title: 'Relief Center', href: '/relief-center',
       items: [
-        { name: 'Government', href: null },
-        { name: 'UN', href: null },
-        { name: 'WHO', href: null },
+        { name: 'Government', href: '/relief-center' },
+        { name: 'UN', href: '/relief-center' },
+        { name: 'WHO', href: '/relief-center'},
         { name: 'Private Companies', href: null },
         { name: 'Co Relief', href: null },
         { name: 'Our Partners', href: '/partners' }

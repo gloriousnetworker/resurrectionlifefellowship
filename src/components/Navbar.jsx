@@ -18,7 +18,7 @@ export default function Navbar() {
 
   const navItems = [
     {
-      name: 'Relief Center',
+      name: 'About Us',
       href: '/about-us',
       subItems: [
         { name: 'Our Programs', href: '/about-us' },
