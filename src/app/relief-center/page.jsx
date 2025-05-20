@@ -191,21 +191,6 @@ export default function ReliefCenterPage() {
             <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
               <img src="/images/partner1.png" alt="Partner 1" className="max-h-16 max-w-full" />
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
-              <img src="/images/partner2.png" alt="Partner 2" className="max-h-16 max-w-full" />
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
-              <img src="/images/partner3.png" alt="Partner 3" className="max-h-16 max-w-full" />
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
-              <img src="/images/partner4.png" alt="Partner 4" className="max-h-16 max-w-full" />
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
-              <img src="/images/partner5.png" alt="Partner 5" className="max-h-16 max-w-full" />
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm flex items-center justify-center h-32">
-              <img src="/images/partner6.png" alt="Partner 6" className="max-h-16 max-w-full" />
-            </div>
           </div>
         </section>
         

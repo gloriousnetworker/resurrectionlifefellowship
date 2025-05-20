@@ -21,7 +21,7 @@ export default function Navbar() {
       name: 'About Us',
       href: '/about-us',
       subItems: [
-        { name: 'Our Programs', href: '/about-us' },
+        { name: 'Relief Center', href: '/relief-center' },
         { name: 'Impact Stories', href: '/about-us' },
         { name: 'Partner NGOs', href: '/partners' }
       ]
