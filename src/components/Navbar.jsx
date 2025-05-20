@@ -18,10 +18,10 @@ export default function Navbar() {
 
   const navItems = [
     {
-      name: 'About Us',
-      href: '/about-us',
+      name: 'Relief Center',
+      href: '/relief-center',
       subItems: [
-        { name: 'Relief Center', href: '/relief-center' },
+        // { name: 'Relief Center', href: '/relief-center' },
         { name: 'Impact Stories', href: '/about-us' },
         { name: 'Partner NGOs', href: '/partners' }
       ]
@@ -126,6 +126,8 @@ export default function Navbar() {
         {/* Mobile Navigation */}
         <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`}>  {/* Mobile menu retains white bg */}
           <div className="pt-4 pb-6 space-y-2 bg-white">
+            {/* Relief Center Link */}
+            
             {navItems.map((item) => (
               <div key={item.name} className="border-b border-gray-200">
                 <button 
