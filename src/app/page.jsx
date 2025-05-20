@@ -243,12 +243,12 @@ export default function HomePage() {
             >
               Shop & Donate
             </button>
-            <button 
+            {/* <button 
               onClick={() => handleRouteChange('/login')}
               className="hero-button bg-transparent border-2 border-white text-white font-semibold px-10 py-4 rounded-full hover:bg-white hover:text-[#039994] transition transform hover:scale-105"
             >
               Join Our Cause
-            </button>
+            </button> */}
           </div>
         </div>
         

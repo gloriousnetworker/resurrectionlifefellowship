@@ -22,8 +22,11 @@ export default function Navbar() {
       href: '/relief-center',
       subItems: [
         // { name: 'Relief Center', href: '/relief-center' },
-        { name: 'Impact Stories', href: '/about-us' },
-        { name: 'Partner NGOs', href: '/partners' }
+        { name: 'Government', href: '/relief-center' },
+        { name: 'UN', href: '/relief-center' },
+        { name: 'WHO', href: '/relief-center' },
+        { name: 'Private Companies', href: '/relief-center' },
+        { name: 'Co Relief', href: '/relief-center' }
       ]
     },
     {
