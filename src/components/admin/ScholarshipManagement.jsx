@@ -6,13 +6,15 @@ import ScholarshipModal from './ScholarshipModal';
 const ScholarshipsManagement = ({ 
   scholarships, 
   loading, 
-  onDeleteScholarship
+  onDeleteScholarship,
+  onCreateScholarship 
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState('');
   const [selectedScholarship, setSelectedScholarship] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
 
-  const openModal = (type, scholarship) => {
+  const openModal = (type, scholarship = null) => {
     setModalType(type);
     setSelectedScholarship(scholarship);
     setIsModalOpen(true);
@@ -42,6 +44,22 @@ const ScholarshipsManagement = ({
     }
   };
 
+  const handleCreate = async (scholarshipData) => {
+    setIsCreating(true);
+    try {
+      const success = await onCreateScholarship(scholarshipData);
+      if (success) {
+        closeModal();
+      }
+      return success;
+    } catch (error) {
+      console.error("Error in ScholarshipsManagement.handleCreate:", error);
+      return false;
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -52,6 +70,12 @@ const ScholarshipsManagement = ({
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-[#039994]">Scholarships</h2>
+        <button
+          onClick={() => openModal('createScholarship')}
+          className="bg-[#039994] hover:bg-[#02736f] text-white px-4 py-2 rounded"
+        >
+          Create Scholarship
+        </button>
       </div>
       
       {loading ? (
@@ -125,6 +149,8 @@ const ScholarshipsManagement = ({
         type={modalType}
         scholarship={selectedScholarship}
         onDelete={handleDelete}
+        onCreate={handleCreate}
+        isProcessing={isCreating}
       />
     </div>
   );

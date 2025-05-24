@@ -1,29 +1,208 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function ReliefCenterPage() {
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  // Fetch banners from API
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token'); // Get token from localStorage
+        
+        const response = await fetch('https://big-relief-backend.vercel.app/api/v1/banners/active', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          setBanners(result.data);
+        } else {
+          throw new Error('Invalid response format');
+        }
+      } catch (err) {
+        console.error('Error fetching banners:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
+  // Auto-rotate banners if multiple exist
+  useEffect(() => {
+    if (banners.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+      }, 5000); // Change banner every 5 seconds
+
+      return () => clearInterval(interval);
+    }
+  }, [banners.length]);
+
+  const nextBanner = () => {
+    setCurrentBannerIndex((prev) => (prev + 1) % banners.length);
+  };
+
+  const prevBanner = () => {
+    setCurrentBannerIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  const goToBanner = (index) => {
+    setCurrentBannerIndex(index);
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen">
       <Navbar />
       
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#039994] to-[#02736f] py-24">
-        <div className="absolute inset-0 bg-[url('/images/relief-bg.jpg')] bg-cover bg-center opacity-20"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Relief Center</h1>
-          <p className="text-xl text-white max-w-3xl mx-auto">
-            Collaborative efforts for humanitarian aid and disaster response
-          </p>
+      {/* Dynamic Banner Section */}
+      {!loading && !error && banners.length > 0 && (
+        <div className="relative bg-gradient-to-r from-[#039994] to-[#02736f] overflow-hidden">
+          <div className="relative h-96 md:h-[500px]">
+            {banners.map((banner, index) => (
+              <div
+                key={banner.id}
+                className={`absolute inset-0 transition-opacity duration-1000 ${
+                  index === currentBannerIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                {/* Banner Background Image */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                  style={{
+                    backgroundImage: `url(${banner.imageUrl})`,
+                  }}
+                >
+                  <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+                </div>
+                
+                {/* Banner Content */}
+                <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+                  <div className="max-w-4xl">
+                    <div className="inline-block bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full mb-4">
+                      <span className="text-white text-sm font-medium">Latest Update</span>
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                      {banner.title}
+                    </h1>
+                    <p className="text-xl md:text-2xl text-white text-opacity-90 mb-8 max-w-2xl">
+                      {banner.description}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button className="bg-white text-[#039994] font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors">
+                        Learn More
+                      </button>
+                      <button className="border-2 border-white text-white font-semibold px-8 py-3 rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors">
+                        Get Involved
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {/* Navigation Controls */}
+            {banners.length > 1 && (
+              <>
+                {/* Previous/Next Buttons */}
+                <button
+                  onClick={prevBanner}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-opacity-30 transition-all z-20"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextBanner}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-opacity-30 transition-all z-20"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                  </button>
+                
+                {/* Dots Indicator */}
+                <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+                  {banners.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => goToBanner(index)}
+                      className={`w-3 h-3 rounded-full transition-all ${
+                        index === currentBannerIndex
+                          ? 'bg-white'
+                          : 'bg-white bg-opacity-50 hover:bg-opacity-75'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Loading State */}
+      {loading && (
+        <div className="bg-gradient-to-r from-[#039994] to-[#02736f] py-24">
+          <div className="container mx-auto px-4 text-center">
+            <div className="animate-pulse">
+              <div className="h-8 bg-white bg-opacity-20 rounded w-64 mx-auto mb-4"></div>
+              <div className="h-4 bg-white bg-opacity-20 rounded w-96 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="bg-gradient-to-r from-[#039994] to-[#02736f] py-24">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Relief Center</h1>
+            <p className="text-xl text-white max-w-3xl mx-auto">
+              Collaborative efforts for humanitarian aid and disaster response
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* No Banners Fallback */}
+      {!loading && !error && banners.length === 0 && (
+        <div className="relative bg-gradient-to-br from-[#039994] to-[#02736f] py-24">
+          <div className="absolute inset-0 bg-[url('/images/relief-bg.jpg')] bg-cover bg-center opacity-20"></div>
+          <div className="container mx-auto px-4 relative z-10 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Relief Center</h1>
+            <p className="text-xl text-white max-w-3xl mx-auto">
+              Collaborative efforts for humanitarian aid and disaster response
+            </p>
+          </div>
+        </div>
+      )}
       
       <div className="container mx-auto px-4 py-16">
         {/* Introduction Section */}
         <section className="mb-20 text-center max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold text-[#039994] mb-6">Our Relief Network</h2>
           <p className="text-gray-600 text-lg mb-8">
-            At BigRelief, we coordinate with national and international organizations to provide effective disaster response and humanitarian aid. Our relief center serves as a hub for collaboration between government agencies, international organizations, and private sector partners.
+           Our relief center serves as a hub for collaboration between government agencies, international organizations, and private sectors.
           </p>
           <div className="bg-[#039994] bg-opacity-10 p-6 rounded-xl border-l-4 border-[#039994]">
             <p className="text-gray-800 italic">

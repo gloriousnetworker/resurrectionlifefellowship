@@ -513,27 +513,55 @@ export default function AdminDashboardPage() {
   const createScholarship = async (formData) => {
     try {
       const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/login');
+        return false;
+      }
+  
+      // Validate required fields
+      if (!formData.title || !formData.description || !formData.amount || 
+          !formData.deadline || !formData.eligibility || !formData.applicationUrl) {
+        setActionMessage({ type: 'error', message: 'Please fill all required fields' });
+        return false;
+      }
+  
+      // Format the payload
+      const payload = {
+        title: formData.title,
+        description: formData.description,
+        amount: formData.amount,
+        deadline: formData.deadline,
+        eligibility: formData.eligibility,
+        applicationUrl: formData.applicationUrl,
+        ...(formData.imageUrl && { imageUrl: formData.imageUrl })
+      };
+  
+      console.log("Creating scholarship with payload:", payload);
+  
       const response = await fetch(`${API_URL}/scholarships`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
-
-      const data = await response.json();
-
+  
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to create scholarship');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to create scholarship. Status: ${response.status}`);
       }
-
-      setScholarships([...scholarships, data.data]);
+  
+      const data = await response.json();
+      setScholarships(prev => [data.data, ...prev]);
       setActionMessage({ type: 'success', message: 'Scholarship created successfully' });
       return true;
     } catch (error) {
       console.error('Error creating scholarship:', error);
-      setActionMessage({ type: 'error', message: error.message || 'Failed to create scholarship' });
+      setActionMessage({ 
+        type: 'error', 
+        message: error.message || 'Failed to create scholarship' 
+      });
       return false;
     }
   };

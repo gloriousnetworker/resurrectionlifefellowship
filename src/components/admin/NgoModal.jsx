@@ -1,4 +1,3 @@
-// components/admin/NgoModal.jsx
 import { useState, useEffect } from 'react';
 
 const NgoModal = ({ 
@@ -64,6 +63,7 @@ const NgoModal = ({
   if (!isOpen) return null;
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
@@ -78,10 +78,23 @@ const NgoModal = ({
               <p className="text-sm text-gray-500">ID: {ngo.id}</p>
             </div>
             
+            {ngo.imageUrl && (
+              <div className="flex justify-center mb-4">
+                <img 
+                  src={ngo.imageUrl} 
+                  alt={ngo.name}
+                  className="w-32 h-32 object-cover rounded-lg border"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Description</p>
-                <p className="text-gray-900">{ngo.description}</p>
+                <p className="text-gray-900 break-words">{ngo.description || 'N/A'}</p>
               </div>
               
               <div>
@@ -92,7 +105,7 @@ const NgoModal = ({
               <div>
                 <p className="text-sm font-medium text-gray-500">Website</p>
                 {ngo.website ? (
-                  <a href={ngo.website} target="_blank" rel="noopener noreferrer" className="text-[#039994] hover:underline">
+                  <a href={ngo.website} target="_blank" rel="noopener noreferrer" className="text-[#039994] hover:underline break-all">
                     {ngo.website}
                   </a>
                 ) : (
@@ -102,9 +115,11 @@ const NgoModal = ({
               
               <div>
                 <p className="text-sm font-medium text-gray-500">Bank Details</p>
-                <p className="text-gray-900">{ngo.bankName || 'N/A'}</p>
-                <p className="text-gray-900">{ngo.accountName || 'N/A'}</p>
-                <p className="text-gray-900">{ngo.accountNumber || 'N/A'}</p>
+                <div className="space-y-1">
+                  <p className="text-gray-900">{ngo.bankName || 'N/A'}</p>
+                  <p className="text-gray-900">{ngo.accountName || 'N/A'}</p>
+                  <p className="text-gray-900">{ngo.accountNumber || 'N/A'}</p>
+                </div>
               </div>
               
               <div>
@@ -124,7 +139,7 @@ const NgoModal = ({
         
       case 'editNgo':
         return (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Name</label>
@@ -170,6 +185,7 @@ const NgoModal = ({
                   value={formData.website}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#039994] focus:border-[#039994]"
+                  placeholder="https://example.org"
                 />
               </div>
               
@@ -181,6 +197,7 @@ const NgoModal = ({
                   value={formData.imageUrl}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#039994] focus:border-[#039994]"
+                  placeholder="https://example.org/logo.png"
                 />
               </div>
               
@@ -245,14 +262,18 @@ const NgoModal = ({
                 Cancel
               </button>
               <button
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-[#039994] text-white rounded hover:bg-[#028885] transition disabled:opacity-50"
+                className="px-4 py-2 bg-[#039994] text-white rounded hover:bg-[#028885] transition disabled:opacity-50 flex items-center"
               >
+                {isProcessing && (
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                )}
                 {isProcessing ? 'Updating...' : 'Update NGO'}
               </button>
             </div>
-          </form>
+          </div>
         );
         
       case 'deleteNgo':
@@ -279,8 +300,11 @@ const NgoModal = ({
                 type="button"
                 onClick={handleSubmit}
                 disabled={isProcessing}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition disabled:opacity-50"
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition disabled:opacity-50 flex items-center"
               >
+                {isProcessing && (
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                )}
                 {isProcessing ? 'Deleting...' : 'Delete'}
               </button>
             </div>
@@ -294,27 +318,21 @@ const NgoModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-lg p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold text-[#039994]">
             {type === 'viewNgo' && 'NGO Details'}
             {type === 'editNgo' && 'Edit NGO'}
             {type === 'deleteNgo' && 'Delete NGO'}
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700 p-1">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
         
-        {isProcessing && type !== 'deleteNgo' ? (
-          <div className="flex justify-center py-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#039994]"></div>
-          </div>
-        ) : (
-          renderContent()
-        )}
+        {renderContent()}
       </div>
     </div>
   );

@@ -28,11 +28,13 @@ export default function Navbar() {
   const navItems = [
     {
       name: 'Relief Center',
-      href: '/about-us',
+      href: '/relief-center',
       subItems: [
-        { name: 'Our Programs', href: '/about-us' },
-        { name: 'Impact Stories', href: '/about-us' },
-        { name: 'Partner NGOs', href: '/partners' }
+        { name: 'Government', href: '/relief-center' },
+        { name: 'UN', href: '/relief-center' },
+        { name: 'WHO', href: '/relief-center' },
+        { name: 'Private Companies', href: '/relief-center' },
+        { name: 'Co Relief', href: '/relief-center' }
       ]
     },
     {
@@ -40,16 +42,17 @@ export default function Navbar() {
       href: '/products',
       subItems: [
         { name: 'All Products', href: '/products' },
-        { name: 'Best Sellers', href: '/products' },
+        { name: 'Scholarships', href: '/scholarships' },
         { name: 'How It Works', href: '/donate' }
       ]
     },
     {
       name: 'If You Can Help, It Will Help',
-      href: '/help',
+      href: '/support',
       subItems: [
-        { name: 'Donate', href: '/donate' },
-        { name: 'Partnerships', href: '/partners' }
+        { name: 'Volunteer', href: '/register' },
+        { name: 'How you can help', href: '/support' },
+        { name: 'Partnerships', href: '/login' }
       ]
     }
   ];
@@ -243,9 +246,9 @@ export default function Navbar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            </div>
+          </div>
         </div>
-        )}
+      )}
     </nav>
-    );
+  );
 }
