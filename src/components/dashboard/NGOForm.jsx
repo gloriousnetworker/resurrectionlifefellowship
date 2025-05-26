@@ -119,7 +119,7 @@ export default function NGOForm({
           disabled={submitting}
           className={`bg-[#039994] text-white font-semibold px-6 py-2 rounded-lg hover:bg-[#02736f] transition ${submitting ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          {submitting ? 'Processing...' : editingNgo?.id ? 'Update NGO' : 'Register NGO'}
+          {submitting ? 'Processing...' : 'Register NGO'}
         </button>
       </div>
     </form>

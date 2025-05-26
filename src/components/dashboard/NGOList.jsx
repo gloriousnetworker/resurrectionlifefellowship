@@ -2,9 +2,8 @@
 
 export default function NGOList({ 
   userNgos, 
-  startEditNgo, 
   deleteNgo, 
-  setEditingNgo 
+  userId 
 }) {
   return (
     <div className="overflow-x-auto">
@@ -36,19 +35,15 @@ export default function NGOList({
                     {ngo.isVerified ? 'Verified' : 'Pending Verification'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                  <button 
-                    onClick={() => startEditNgo(ngo)}
-                    className="text-blue-500 hover:text-blue-600 px-3 py-1 rounded"
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    onClick={() => deleteNgo(ngo.id)}
-                    className="text-red-500 hover:text-red-600 px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  {ngo.createdBy === userId && (
+                    <button 
+                      onClick={() => deleteNgo(ngo.id)}
+                      className="text-red-500 hover:text-red-600 px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -1,8 +1,8 @@
 // components/admin/BannersManagement.jsx
 import { useState, useEffect } from 'react';
-import BannerModal from './BannerModal';
+import BannerModal from './BigReliefModal';
 
-const BannersManagement = ({ 
+const BigReliefManagement = ({ 
   banners, 
   loading, 
   onCreateBanner,
@@ -47,7 +47,7 @@ const BannersManagement = ({
   return (
     <div className="mb-8">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
-        <h2 className="text-2xl font-semibold text-[#039994]">Banners</h2>
+        <h2 className="text-2xl font-semibold text-[#039994]">Relief Center Management</h2>
         
         <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
           <div className="relative flex-grow">
@@ -58,7 +58,7 @@ const BannersManagement = ({
             </div>
             <input
               type="text"
-              placeholder="Search banners..."
+              placeholder="Search relief centers..."
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#039994] focus:border-[#039994]"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -69,7 +69,7 @@ const BannersManagement = ({
             onClick={() => openModal('createBanner')}
             className="px-4 py-2 bg-[#039994] text-white rounded hover:bg-[#028885] transition whitespace-nowrap"
           >
-            Create New Banner
+            Create Relief Center
           </button>
         </div>
       </div>
@@ -137,7 +137,7 @@ const BannersManagement = ({
               ) : (
                 <tr>
                   <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                    {searchTerm.trim() === '' ? 'No banners found' : 'No banners match your search'}
+                    {searchTerm.trim() === '' ? 'No relief centers found' : 'No relief center match your search'}
                   </td>
                 </tr>
               )}
@@ -159,4 +159,4 @@ const BannersManagement = ({
   );
 };
 
-export default BannersManagement;
+export default BigReliefManagement;

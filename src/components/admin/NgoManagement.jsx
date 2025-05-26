@@ -58,7 +58,6 @@ const NgoManagement = ({
   };
 
   const getAuthToken = () => {
-    // Try multiple possible keys where the token might be stored
     const possibleKeys = ['authToken', 'token', 'accessToken', 'jwt', 'bearerToken'];
     
     for (const key of possibleKeys) {
@@ -68,7 +67,6 @@ const NgoManagement = ({
       }
     }
     
-    // Also check if token is stored in a user object
     const userData = localStorage.getItem('user');
     if (userData) {
       try {
@@ -102,11 +100,8 @@ const NgoManagement = ({
 
       const headers = {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
       };
-
-      // Add authorization header - try different formats
-      // Most common formats are "Bearer token" or just "token"
-      headers['Authorization'] = `Bearer ${authToken}`;
       
       const response = await fetch('https://big-relief-backend.vercel.app/api/v1/ngos', {
         method: 'POST',
@@ -238,13 +233,21 @@ const NgoManagement = ({
                           View
                         </button>
                         {activeTab === 'pending' ? (
-                          <button 
-                            onClick={() => handleVerify(ngo.id)}
-                            disabled={isVerifying}
-                            className="text-green-500 hover:text-green-600 px-3 py-1 rounded disabled:opacity-50"
-                          >
-                            {isVerifying ? 'Verifying...' : 'Verify'}
-                          </button>
+                          <>
+                            <button 
+                              onClick={() => handleVerify(ngo.id)}
+                              disabled={isVerifying}
+                              className="text-green-500 hover:text-green-600 px-3 py-1 rounded disabled:opacity-50"
+                            >
+                              {isVerifying ? 'Verifying...' : 'Verify'}
+                            </button>
+                            <button 
+                              onClick={() => openModal('deleteNgo', ngo)} 
+                              className="text-red-500 hover:text-red-600 px-3 py-1 rounded"
+                            >
+                              Delete
+                            </button>
+                          </>
                         ) : (
                           <>
                             <button 
@@ -341,7 +344,6 @@ const CreateNgoForm = ({ onSubmit, isCreating }) => {
       [name]: value
     });
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -400,7 +402,6 @@ const CreateNgoForm = ({ onSubmit, isCreating }) => {
     
     const success = await onSubmit(formData);
     if (success) {
-      // Reset form on success
       setFormData({
         name: '',
         description: '',

@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import Navbar from '@/components/DashboardNavbar';
 import Footer from '@/components/Footer';
-import BannerCarousel from '@/components/dashboard/BannerCarousel';
 import DashboardStats from '@/components/dashboard/DashboardStats';
 import DashboardWelcome from '@/components/dashboard/DashboardWelcome';
 import NGOForm from '@/components/dashboard/NGOForm';
@@ -17,10 +16,10 @@ export default function DashboardPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [banners, setBanners] = useState([]);
   const [userNgos, setUserNgos] = useState([]);
   const [scholarships, setScholarships] = useState([]);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [newlyCreatedNgo, setNewlyCreatedNgo] = useState(null);
   
   // NGO Form State
   const [ngoForm, setNgoForm] = useState({
@@ -62,7 +61,6 @@ export default function DashboardPage() {
     }
 
     setUser(JSON.parse(userData));
-    fetchBanners();
     fetchUserNgos(token);
     setLoading(false);
   }, [router]);
@@ -73,21 +71,6 @@ export default function DashboardPage() {
       fetchScholarships(token);
     }
   }, [userNgos, activeTab]);
-
-  const fetchBanners = async () => {
-    try {
-      const response = await fetch(`${API_URL}/banners/active`);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to fetch banners');
-      }
-
-      setBanners(data.data);
-    } catch (error) {
-      console.error('Error fetching banners:', error);
-    }
-  };
 
   const fetchUserNgos = async (token) => {
     try {
@@ -104,6 +87,10 @@ export default function DashboardPage() {
       }
 
       setUserNgos(data.data);
+      // Clear newly created NGO notice if the NGO is now verified
+      if (newlyCreatedNgo && data.data.some(ngo => ngo.id === newlyCreatedNgo.id && ngo.isVerified)) {
+        setNewlyCreatedNgo(null);
+      }
     } catch (error) {
       console.error('Error fetching NGOs:', error);
     }
@@ -145,14 +132,10 @@ export default function DashboardPage() {
 
     try {
       const token = localStorage.getItem('token');
-      const url = editingNgo?.id 
-        ? `${API_URL}/ngos/${editingNgo.id}`
-        : `${API_URL}/ngos`;
+      const url = `${API_URL}/ngos`;
       
-      const method = editingNgo?.id ? 'PUT' : 'POST';
-
       const response = await fetch(url, {
-        method,
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -163,10 +146,11 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || `Failed to ${editingNgo?.id ? 'update' : 'register'} NGO`);
+        throw new Error(data.message || 'Failed to register NGO');
       }
 
-      toast.success(`NGO ${editingNgo?.id ? 'updated' : 'registered'} successfully!`);
+      toast.success('NGO registration submitted successfully!');
+      setNewlyCreatedNgo(data.data);
       setNgoForm({
         name: '',
         description: '',
@@ -177,10 +161,9 @@ export default function DashboardPage() {
         contactEmail: '',
         imageUrl: ''
       });
-      setEditingNgo(null);
       fetchUserNgos(token);
     } catch (error) {
-      toast.error(error.message || `Failed to ${editingNgo?.id ? 'update' : 'register'} NGO`);
+      toast.error(error.message || 'Failed to register NGO');
     } finally {
       setSubmitting(false);
     }
@@ -290,21 +273,6 @@ export default function DashboardPage() {
     }
   };
 
-  const startEditNgo = (ngo) => {
-    setEditingNgo(ngo);
-    setNgoForm({
-      name: ngo.name,
-      description: ngo.description,
-      accountNumber: ngo.accountNumber,
-      bankName: ngo.bankName,
-      accountName: ngo.accountName,
-      website: ngo.website,
-      contactEmail: ngo.contactEmail,
-      imageUrl: ngo.imageUrl
-    });
-    setActiveTab('ngos');
-  };
-
   const startEditScholarship = (scholarship) => {
     setEditingScholarship(scholarship);
     setScholarshipForm({
@@ -358,9 +326,6 @@ export default function DashboardPage() {
       <Navbar />
       
       <div className="container mx-auto px-4 py-16">
-        {/* Banner Carousel */}
-        {banners.length > 0 && <BannerCarousel banners={banners} />}
-
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -372,6 +337,24 @@ export default function DashboardPage() {
                 Thank you for being part of Big Relief. Together we can make a difference.
               </p>
               
+              {newlyCreatedNgo && !newlyCreatedNgo.isVerified && (
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-yellow-700">
+                        Your NGO "<span className="font-medium">{newlyCreatedNgo.name}</span>" has been submitted for admin approval. 
+                        It will appear in your dashboard once verified.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <DashboardStats userNgos={userNgos} scholarships={scholarships} />
               <DashboardWelcome user={user} setActiveTab={setActiveTab} />
             </div>
@@ -382,16 +365,14 @@ export default function DashboardPage() {
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-[#039994]">
-                  {editingNgo ? 'Edit NGO' : 'My NGOs'}
+                  NGOs
                 </h2>
-                {!editingNgo && (
-                  <button
-                    onClick={() => setEditingNgo({})}
-                    className="bg-[#039994] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#02736f] transition"
-                  >
-                    + Add NGO
-                  </button>
-                )}
+                <button
+                  onClick={() => setEditingNgo({})}
+                  className="bg-[#039994] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#02736f] transition"
+                >
+                  + Add NGO
+                </button>
               </div>
 
               {editingNgo ? (
@@ -406,9 +387,8 @@ export default function DashboardPage() {
               ) : (
                 <NGOList 
                   userNgos={userNgos}
-                  startEditNgo={startEditNgo}
                   deleteNgo={deleteNgo}
-                  setEditingNgo={setEditingNgo}
+                  userId={user?.id}
                 />
               )}
             </div>

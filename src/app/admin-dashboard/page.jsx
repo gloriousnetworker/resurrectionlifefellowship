@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import NotificationAlert from '@/components/admin/NotificationAlert';
 import UserManagement from '@/components/admin/UserManagement';
 import NgoManagement from '@/components/admin/NgoManagement';
-import BannersManagement from '@/components/admin/BannersManagement';
+import BannersManagement from '@/components/admin/BigReliefManagement';
 import ScholarshipsManagement from '@/components/admin/ScholarshipManagement';
 
 export default function AdminDashboardPage() {
@@ -638,7 +638,7 @@ export default function AdminDashboardPage() {
               className={`py-2 px-4 font-medium ${activeTab === 'banners' ? 'text-[#039994] border-b-2 border-[#039994]' : 'text-gray-500 hover:text-[#039994]'}`}
               onClick={() => setActiveTab('banners')}
             >
-              Banners
+              Relief Center
             </button>
             <button 
               className={`py-2 px-4 font-medium ${activeTab === 'scholarships' ? 'text-[#039994] border-b-2 border-[#039994]' : 'text-gray-500 hover:text-[#039994]'}`}
