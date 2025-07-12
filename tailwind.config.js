@@ -16,7 +16,7 @@ module.exports = {
         foreground: '#111827',
       },
       fontFamily: {
-        'sf-pro-text': ['SF Pro Text', 'sans-serif'],
+        playfair: ['"Playfair Display"', 'serif'],
       },
       keyframes: {
         rotate: {

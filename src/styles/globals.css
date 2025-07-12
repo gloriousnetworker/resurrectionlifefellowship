@@ -1,34 +1,15 @@
-/* ✅ FontAwesome import must come first */
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Font Styles */
-@font-face {
-  font-family: 'SF Pro Text';
-  src: url('/fonts/SFProText-Regular.woff2') format('woff2'),
-       url('/fonts/SFProText-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'SF Pro Text';
-  src: url('/fonts/SFProText-Semibold.woff2') format('woff2'),
-       url('/fonts/SFProText-Semibold.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-}
-
-/* Global body styling */
 body {
   @apply bg-background text-foreground;
-  font-family: 'SF Pro Text', sans-serif;
+  font-family: 'Playfair Display', serif;
 }
 
-/* ✅ Utility Layer */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
