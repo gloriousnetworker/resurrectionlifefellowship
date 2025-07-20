@@ -24,7 +24,7 @@ export default function Footer() {
       title: 'Company',
       items: [
         { name: 'Our Team', href: '#about' },
-        { name: 'Careers', href: 'mailto:careers@luxeaffiliates.com' },
+        { name: 'Careers', href: 'mailto:careers@efiazzyfly.com' },
         { name: 'Partners', href: '#contact' },
         { name: 'Testimonials', href: '#why-us' }
       ]
@@ -44,10 +44,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center mb-6">
-              <img src="/images/logo.png" alt="Luxe Affiliates Logo" className="h-12" />
+              <img src="/images/logo.png" alt="Efiazzyfly Logo" className="h-12" />
             </Link>
             <p className="text-gray-400 mb-6">
-              Luxe Affiliates specializes in premium affiliate marketing solutions for luxury hotels and travel brands, helping you maximize bookings and revenue.
+              Efiazzyfly specializes in premium affiliate marketing solutions for luxury hotels and travel brands, helping you maximize bookings and revenue.
             </p>
             <div className="flex space-x-4">
               {socialMedia.map((social) => (
@@ -91,8 +91,8 @@ export default function Footer() {
                 </a>
               </p>
               <p>
-                <a href="mailto:info@luxeaffiliates.com" className="hover:text-white transition">
-                  info@luxeaffiliates.com
+                <a href="mailto:info@efiazzyfly.com" className="hover:text-white transition">
+                  info@efiazzyfly.com
                 </a>
               </p>
             </div>
@@ -101,7 +101,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} Luxe Affiliates. All rights reserved.
+            &copy; {new Date().getFullYear()} Efiazzyfly. All rights reserved.
           </p>
           <div className="flex space-x-6 text-gray-500">
             <Link href="/privacy" className="hover:text-white text-sm transition">

@@ -116,7 +116,7 @@ export default function HomePage() {
           <div className="text-left mb-16 max-w-4xl">
             <h2 className="text-4xl md:text-5xl font-bold text-[#D4AF37] mb-6">About Our Agency</h2>
             <p className="text-xl text-gray-700">
-              At Luxe Affiliates, we specialize in affiliate marketing for hotels and travel brands. Our team of experts crafts tailored strategies to drive revenue, boost online presence, and connect travelers with unforgettable experiences.
+              At Efiazzyfly, we specialize in affiliate marketing for hotels and travel brands. Our team of experts crafts tailored strategies to drive revenue, boost online presence, and connect travelers with unforgettable experiences.
             </p>
           </div>
           
@@ -178,7 +178,7 @@ export default function HomePage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Why Choose Us</h2>
             <p className="text-xl max-w-3xl mx-auto">
-              The Luxe Affiliates difference
+              The Efiazzyfly difference
             </p>
           </div>
           
@@ -216,7 +216,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
             <button 
-              onClick={() => window.location.href = 'mailto:info@luxeaffiliates.com'}
+              onClick={() => window.location.href = 'mailto:info@efiazzyfly.com'}
               className="bg-[#D4AF37] text-gray-900 font-semibold px-12 py-4 hover:bg-[#B7950B] transition transform hover:scale-105 shadow-lg border-0"
             >
               Contact Us
