@@ -78,7 +78,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-[#D4AF37]">Contact Us</h3>
             <div className="space-y-3 text-gray-400">
-              <p>123 Ikorudu Avenue, Suite 100</p>
+              <p>70 Bayo oyewole street, Off Ago Palace way, Oshodi </p>
               <p>Lagos, Nigeria</p>
               <p>
                 <a href="tel:+1234567890" className="hover:text-white transition">
