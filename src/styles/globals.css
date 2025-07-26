@@ -1,13 +1,13 @@
 @import "@fortawesome/fontawesome-free/css/all.min.css";
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-background text-foreground;
-  font-family: 'Playfair Display', serif;
+  @apply bg-[#0C3C4C] text-[#F3EFE6];
+  font-family: 'Cinzel', serif;
 }
 
 @layer utilities {
@@ -26,6 +26,7 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
