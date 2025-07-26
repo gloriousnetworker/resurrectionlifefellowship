@@ -18,27 +18,23 @@ const HomePage = () => {
   const pastors = [
     {
       id: 1,
-      image: '/images/pastor1.jpg',
-      name: 'Pastor John & Kristy Camp',
-      title: 'Senior Pastors',
-      bio1: 'Pastors John and Kristy have been Senior Pastors at RLF for over 25 years. Previously they were Youth Pastors for 10 years. Both John and Kristy are natives of Central New York where they have been called by God to minister.',
-      bio2: 'They were trained and educated in Pastoral Ministry through Elim Fellowship where they have their licensing and ordination as ministers. Pastor John teaches the word with wisdom and experience. Kristy is an exhorter of the word and prophecy.'
+      image: '/images/pastor-nathaniel.jpg',
+      name: 'Pastor Nathaniel'
     },
     {
       id: 2,
-      image: '/images/pastor2.jpg',
-      name: 'Aaron & Erin Camp',
-      title: 'Pastor',
-      bio1: 'Pastor Aaron Camp alongside his wife Erin, attended Elim Bible Institute, and have been serving in this capacity, and as leadership of our church since 2003.',
-      bio2: 'Pastor Aaron is a full time contractor and also assists his wife, Erin, as a full time photographer. They have 7 children- (4 girls & 3 boys) spanning their 20 year marriage.'
+      image: '/images/pastor-marcus.jpg',
+      name: 'Pastor Marcus'
     },
     {
       id: 3,
-      image: '/images/pastor3.jpg',
-      name: 'Jeff & Laura Snyder',
-      title: 'Elders, Revive Ministry, & Women\'s Ministry',
-      bio1: 'Jeff and Laura Snyder serve at RLF as leaders in many areas since they were married in 1998. As a native of Madison, Jeff graduated from Hartwick College and currently teaches history at Cooperstown High School.',
-      bio2: 'Installed as elder in 2013, he currently serves in a supporting role of the Senior Leadership team, is a Trustee on the Financial Board, Capital Project Financial Coordinator and is part of the worship & prayer teams.'
+      image: '/images/pastor-caleb.jpg',
+      name: 'Pastor Caleb'
+    },
+    {
+      id: 4,
+      image: '/images/accountant.jpg',
+      name: 'The Accountant'
     }
   ];
 
@@ -151,24 +147,34 @@ const HomePage = () => {
 
       <div ref={pastorsRef} className="py-20 px-4 md:px-8 lg:px-16 bg-[#0C3C4C]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#D6B16A] mb-16 text-center">Our Pastors</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#D6B16A] mb-8 text-center">Our Spiritual Leaders</h2>
+          <div className="text-center mb-16">
+            <p className="text-lg font-lora mb-6 max-w-4xl mx-auto">
+              God has blessed our fellowship with dedicated men of faith who serve as shepherds and guides on your spiritual journey. Through their wisdom, prayer, and biblical teaching, they help cultivate an environment where souls can flourish and grow deeper in their relationship with Christ.
+            </p>
+            <p className="text-lg font-lora max-w-4xl mx-auto">
+              Each leader brings unique gifts and perspectives, united in their commitment to nurturing your faith, providing biblical counsel, and walking alongside you as you discover God's purpose for your life. Their hearts burn with passion to see every member of our congregation mature in Christ and step boldly into their divine calling.
+            </p>
+          </div>
           
-          {pastors.map((pastor, index) => (
-            <div 
-              key={pastor.id}
-              className={`flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center mb-20 transition-all duration-1000 ${pastorsVisible ? 'opacity-100 translate-x-0' : index % 2 === 0 ? 'opacity-0 -translate-x-10' : 'opacity-0 translate-x-10'}`}
-            >
-              <div className="md:w-1/3 mb-10 md:mb-0">
-                <div className="h-64 w-64 mx-auto bg-cover bg-center rounded-full overflow-hidden" style={{ backgroundImage: `url(${pastor.image})` }}></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {pastors.map((pastor, index) => (
+              <div 
+                key={pastor.id}
+                className={`text-center transition-all duration-1000 ${pastorsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
+                <div className="h-80 w-80 mx-auto bg-cover bg-center rounded-lg overflow-hidden mb-6 shadow-lg" style={{ backgroundImage: `url(${pastor.image})` }}></div>
+                <h3 className="text-2xl font-bold text-[#D6B16A] mb-2">{pastor.name}</h3>
               </div>
-              <div className={`md:w-2/3 ${index % 2 === 0 ? 'md:pl-10' : 'md:pr-10'}`}>
-                <h3 className="text-2xl font-bold text-[#D6B16A] mb-4">{pastor.name}</h3>
-                <h4 className="text-xl font-lora mb-6">{pastor.title}</h4>
-                <p className="font-lora mb-4">{pastor.bio1}</p>
-                <p className="font-lora">{pastor.bio2}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          <div className="mt-16 text-center">
+            <p className="text-lg font-lora max-w-4xl mx-auto">
+              Whether you're seeking guidance in prayer, biblical understanding, or navigating life's challenges, our pastoral team stands ready to support you with open hearts and godly wisdom. They are committed to creating a safe space where you can grow, heal, and discover the abundant life that Christ has promised to all who believe.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -176,7 +182,7 @@ const HomePage = () => {
         <div className="max-w-4xl mx-auto">
           <p className="font-lora mb-2">©2025 Resurrection Life Fellowship</p>
           <p className="font-lora">
-            7065 US RT. 20 - Madison NY 13402 - (315) 893-7877 - info@rlfchurch.com
+            7065 US RT. 20 - Madison NY 13402
           </p>
         </div>
       </footer>
