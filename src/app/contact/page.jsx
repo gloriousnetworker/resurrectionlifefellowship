@@ -143,3 +143,5 @@ const Contact = () => {
 };
 
 export default Contact;
+
+//something needs to be fixed
